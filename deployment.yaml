@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hadwenweb
+  labels:
+    app: hadwen
+spec:
+  selector:
+    matchLabels:
+      app: hadwen
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: hadwen
+        tier: web
+    spec:
+      containers:
+        - image: hadwen/web:v1
+          name: hadwen-web
+          ports:
+            - containerPort: 8080
+              protocol: TCP
