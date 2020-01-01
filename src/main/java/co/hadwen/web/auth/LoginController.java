@@ -2,6 +2,7 @@ package co.hadwen.web.auth;
 
 import co.hadwen.web.auth.dto.LoginDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,5 +16,10 @@ public class LoginController {
     @PostMapping("/login")
     ResponseEntity<String> login(@RequestBody LoginDTO request) throws Exception {
         return ResponseEntity.created(new URI("session-token")).build();
+    }
+
+    @GetMapping("/test")
+    ResponseEntity<String> getTest() throws Exception {
+        return ResponseEntity.ok().build();
     }
 }

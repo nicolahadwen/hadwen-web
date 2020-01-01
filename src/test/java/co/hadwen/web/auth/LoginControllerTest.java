@@ -39,4 +39,13 @@ public class LoginControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }
+
+    @DisplayName("Valid login should produce a session token")
+    @Test
+    public void valid2() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get( "/v1/test")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }
