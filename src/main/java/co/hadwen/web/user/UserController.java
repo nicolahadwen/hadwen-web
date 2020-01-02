@@ -20,6 +20,7 @@ public class UserController {
     @PostMapping("/user")
     ResponseEntity<String> createUser(@RequestBody UserEntity user) throws Exception {
         userClient.createUser(user);
+        System.out.println("created user!");
         return ResponseEntity.created(new URI("session-token")).build();
     }
 }

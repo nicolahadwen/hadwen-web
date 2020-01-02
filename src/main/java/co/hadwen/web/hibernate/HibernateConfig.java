@@ -1,6 +1,7 @@
 package co.hadwen.web.hibernate;
 
-import co.hadwen.hibernate.HibernateContext;
+import co.hadwen.hibernate.HibernateSession;
+import co.hadwen.hibernate.HibernateSessionFactory;
 import co.hadwen.user.entity.UserEntity;
 import lombok.NonNull;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -23,21 +24,26 @@ public class HibernateConfig {
 
     @Bean
     AnnotationConfiguration annotationConfig() {
-        AnnotationConfiguration configuration = new AnnotationConfiguration()
-                .addAnnotatedClass(UserEntity.class);
-        configuration.setProperties(createProperties());
-        return configuration.configure();
+        return new AnnotationConfiguration()
+                .addAnnotatedClass(UserEntity.class)
+                .setProperties(createProperties());
     }
 
     @Bean
-    HibernateContext hibernateContext(@NonNull AnnotationConfiguration hibernateConfig) {
-        return new HibernateContext(hibernateConfig.buildSessionFactory());
+    HibernateSessionFactory hibernateSessionFactory(@NonNull AnnotationConfiguration hibernateConfig) {
+        return new HibernateSessionFactory(hibernateConfig);
     }
+
+    @Bean
+    HibernateSession hibernateSession(@NonNull HibernateSessionFactory sessionFactory) {
+        return sessionFactory.create();
+    }
+
     private Properties createProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
         properties.setProperty("hibernate.connection.url", datasourceUrl);
-        properties.setProperty("hibernate.connection.password", datasourcePassword);
+        properties.setProperty("hibernate.connection.password", "sEEkVtKK3#s\\n+%b");
         properties.setProperty("hibernate.connection.username", datasourceUsername);
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.setProperty("show_sql", "true");
