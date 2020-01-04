@@ -12,13 +12,12 @@ import java.util.Collections;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String FRONTEND_LOCAL_HOST = "http://localhost:8081";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CorsConfiguration corsConfig = new CorsConfiguration();
         // todo: setup for prod, make env variable and based on env
-        corsConfig.setAllowedOrigins(Collections.singletonList(FRONTEND_LOCAL_HOST));
+        corsConfig.setAllowedOrigins(Collections.singletonList("http://localhost:8081"));
         corsConfig.setAllowedMethods(
                 Arrays.asList(
                         RequestMethod.GET.name(),

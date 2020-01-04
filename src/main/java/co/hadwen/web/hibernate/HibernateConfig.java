@@ -4,7 +4,6 @@ import co.hadwen.hibernate.HibernateSession;
 import co.hadwen.hibernate.HibernateSessionFactory;
 import co.hadwen.user.entity.UserEntity;
 import lombok.NonNull;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,14 +22,14 @@ public class HibernateConfig {
     String datasourcePassword;
 
     @Bean
-    AnnotationConfiguration annotationConfig() {
-        return new AnnotationConfiguration()
+    org.hibernate.cfg.Configuration annotationConfig() {
+        return new org.hibernate.cfg.Configuration()
                 .addAnnotatedClass(UserEntity.class)
                 .setProperties(createProperties());
     }
 
     @Bean
-    HibernateSessionFactory hibernateSessionFactory(@NonNull AnnotationConfiguration hibernateConfig) {
+    HibernateSessionFactory hibernateSessionFactory(@NonNull org.hibernate.cfg.Configuration hibernateConfig) {
         return new HibernateSessionFactory(hibernateConfig);
     }
 
