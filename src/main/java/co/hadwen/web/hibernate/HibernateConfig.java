@@ -2,7 +2,8 @@ package co.hadwen.web.hibernate;
 
 import co.hadwen.hibernate.HibernateSession;
 import co.hadwen.hibernate.HibernateSessionFactory;
-import co.hadwen.user.entity.UserEntity;
+import co.hadwen.user.entity.UserAccount;
+import co.hadwen.web.session.WebSessionToken;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +25,8 @@ public class HibernateConfig {
     @Bean
     org.hibernate.cfg.Configuration annotationConfig() {
         return new org.hibernate.cfg.Configuration()
-                .addAnnotatedClass(UserEntity.class)
+                .addAnnotatedClass(UserAccount.class)
+                .addAnnotatedClass(WebSessionToken.class)
                 .setProperties(createProperties());
     }
 

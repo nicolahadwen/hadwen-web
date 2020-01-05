@@ -1,8 +1,9 @@
 package co.hadwen.web.user;
 
 import co.hadwen.user.UserClient;
-import co.hadwen.user.entity.UserEntity;
+import co.hadwen.user.entity.UserAccount;
 import co.hadwen.web.exception.NotFoundException;
+import co.hadwen.web.exception.NotFoundException.Entity;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -26,13 +27,13 @@ public class UserController {
     private UserClient userClient;
 
     @GetMapping("/user/{id}")
-    ResponseEntity<UserEntity> get(@PathVariable String id) throws Exception {
+    ResponseEntity<UserAccount> get(@PathVariable String id) throws Exception {
         return userClient.get(id).map(user -> ResponseEntity.ok().body(user))
-                .orElseThrow(() -> new NotFoundException("user", "id=" + id));
+                .orElseThrow(() -> new NotFoundException(Entity.USER, "id=" + id));
     }
 
     @GetMapping("/user/search")
-    ResponseEntity<UserEntity> search(
+    ResponseEntity<UserAccount> search(
             @RequestParam SearchType type,
             @RequestParam String query) throws Exception {
         if(type == SearchType.EMAIL) {
@@ -44,21 +45,20 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    ResponseEntity<String> create(@RequestBody UserEntity user) throws Exception {
+    ResponseEntity<String> create(@RequestBody UserAccount user) throws Exception {
         userClient.create(user);
         return ResponseEntity.created(new URI(String.format(CREATED_URI_FORMAT, user.getUserId()))).build();
     }
 
     @PatchMapping("/user/{id}")
-    ResponseEntity<String> update(
-            @PathVariable String id,
-            @RequestBody UserEntity update) throws Exception {
-        UserEntity user = userClient.get(id)
-                .orElseThrow(() -> new NotFoundException("user", "id=" + id));
+    ResponseEntity<String> update(@PathVariable String id, @RequestBody UserAccount update) {
+        UserAccount user = userClient.get(id)
+                .orElseThrow(() -> new NotFoundException(Entity.USER, "id=" + id));
         if(update.getEmail() != null && !StringUtils.isEmpty(update.getEmail())) {
             user.setEmail(update.getEmail());
         }
         if(update.getPassword() != null && !StringUtils.isEmpty(update.getPassword())) {
+            System.out.println("password update: " + update.getPassword());
             user.setPassword(update.getPassword());
         }
         if(update.getFirstName() != null && !StringUtils.isEmpty(update.getFirstName())) {
