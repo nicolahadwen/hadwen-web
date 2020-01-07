@@ -19,20 +19,20 @@ import javax.persistence.UniqueConstraint;
 
 @Data
 @Entity
-@Table(name = "web_session_token", schema="hadwen", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "SESSION_TOKEN")
-})
+@Table(name = "web_session_token",
+        schema="hadwen",
+        uniqueConstraints = { @UniqueConstraint(columnNames = "SESSION_TOKEN")})
 
 public class WebSessionToken implements Serializable {
     public static final int DAYS_UNTIL_TOKEN_EXPIRY_DEFAULT = 1;
     @Getter
-    public enum Columns {
-        SESSION_TOKEN("SESSION_TOKEN"),
-        USER_ID("USER_ID");
+    public enum Attributes {
+        SESSION_TOKEN("sessionToken"),
+        USER_ID("userId");
 
         @Getter
         private final String properName;
-        Columns(@NonNull String properName) {
+        Attributes(@NonNull String properName) {
             this.properName = properName;
         }
     }

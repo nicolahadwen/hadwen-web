@@ -1,7 +1,7 @@
 package co.hadwen.web.session;
 
 import co.hadwen.hibernate.HibernateSession;
-import co.hadwen.web.session.WebSessionToken.Columns;
+import co.hadwen.web.session.WebSessionToken.Attributes;
 import lombok.NonNull;
 import org.hibernate.Session;
 
@@ -30,7 +30,7 @@ public class WebSessionClient {
         CriteriaQuery<WebSessionToken> query = criteriaBuilder.createQuery(WebSessionToken.class);
         Root<WebSessionToken> root = query.from(WebSessionToken.class);
         query.select(root)
-                .where(criteriaBuilder.equal(root.get(Columns.USER_ID.getProperName()), userId));
+                .where(criteriaBuilder.equal(root.get(Attributes.USER_ID.getProperName()), userId));
         List<WebSessionToken> results = session.createQuery(query).list();
         return results.size() > 0 ? Optional.of(results.get(0)) : Optional.empty();
     }

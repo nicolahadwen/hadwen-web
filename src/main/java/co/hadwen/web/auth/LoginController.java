@@ -31,8 +31,6 @@ public class LoginController {
     ResponseEntity<String> login(@RequestBody LoginDTO request) throws Exception {
         UserAccount user =  userClient.getByEmail(request.getEmail())
                 .orElseThrow(() -> new NotFoundException(Entity.USER, request.getEmail()));
-        System.out.println("password request: " + request.getPassword());
-
         if(!user.doesPasswordMatch(request.getPassword())) {
             throw new ValidationException(
                     ValidationErrorDTO.builder()
