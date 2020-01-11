@@ -24,6 +24,9 @@ public class HibernateConfig {
 
     @Bean
     org.hibernate.cfg.Configuration annotationConfig() {
+        System.out.println("DB_PORT: " + System.getenv("DB_PORT"));
+        System.out.println("DB_HOST: " + System.getenv("DB_HOST"));
+
         return new org.hibernate.cfg.Configuration()
                 .addAnnotatedClass(UserAccount.class)
                 .addAnnotatedClass(WebSessionToken.class)

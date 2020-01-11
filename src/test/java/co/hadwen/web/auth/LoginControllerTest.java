@@ -1,7 +1,6 @@
 package co.hadwen.web.auth;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import co.hadwen.user.UserClient;
 import co.hadwen.user.entity.UserAccount;
