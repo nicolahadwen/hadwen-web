@@ -14,6 +14,6 @@ fi
 BUILD_SOURCE="${CUR_DIR}/scripts/docker-build.sh";
 
 source ${BUILD_SOURCE};
-docker run -it hadwen/web -p 8080:8080 -e DB_PORT=5432 -e DB_HOST=docker.for.mac.host.internal
+docker run -p 8080:8080  -e "DB_PORT=5432" -e "DB_HOST=72.138.59.58" -it hadwen/web:latest
 unset CUR_DIR;
 unset BUILD_SOURCE;
