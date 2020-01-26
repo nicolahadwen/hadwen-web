@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
+./scripts/docker-build.sh
 docker push hadwen/web
-kubectl create deployment hadwen-web --image=hadwen/web
-
+kubectl apply -f ./deployment.yaml

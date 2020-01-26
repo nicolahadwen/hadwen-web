@@ -1,10 +1,11 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hadwenweb
+  name: hadwenwebdeployment
   labels:
     app: hadwen
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: hadwen
@@ -16,8 +17,57 @@ spec:
         tier: web
     spec:
       containers:
-        - image: hadwen/web:v1
-          name: hadwen-web
+        - image: hadwen/web:latest
+          name: hadwenweb
           ports:
             - containerPort: 8080
               protocol: TCP
+          resources:
+            limits:
+              memory: "200Mi"
+            requests:
+              memory: "100Mi"
+          args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]
+          env:
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: sql-connection
+                  key: port
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: sql-connection
+                  key: host
+
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sql-user-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sql-user-credentials
+                  key: password
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.14
+          resources:
+            limits:
+              memory: "200Mi"
+            requests:
+              memory: "100Mi"
+          command: ["/cloud_sql_proxy",
+                    "-instances=hadwen:us-central1:admin=tcp:3306",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          securityContext:
+            runAsUser: 2  # non-root user
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials

@@ -8,8 +8,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class UserConfig {
+    /*
     @Bean
     UserClient userClient(@NonNull HibernateSession hibernateSession) {
         return new UserClient(hibernateSession.getSession());
-    }
+    }*/
 }

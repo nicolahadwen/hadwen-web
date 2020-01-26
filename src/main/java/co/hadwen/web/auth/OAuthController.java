@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("v1")
 @RestController
 public class OAuthController {
+    /*
     @Value("security.oauth2.client.client-id")
     private String clientId;
 
@@ -21,5 +22,5 @@ public class OAuthController {
         return ResponseEntity.ok(OAuthCredentialsDTO.builder()
                 .clientId(clientId)
                 .build());
-    }
+    }*/
 }

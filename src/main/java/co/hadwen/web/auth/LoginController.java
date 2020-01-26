@@ -24,6 +24,7 @@ import java.net.URI;
 @RequestMapping("v1")
 @RestController
 public class LoginController {
+    /*
     private final UserClient userClient;
     private final WebSessionClient webSessionClient;
 
@@ -43,5 +44,5 @@ public class LoginController {
         }
         WebSessionToken sessionToken = webSessionClient.create(user.getUserId());
         return ResponseEntity.created(new URI(sessionToken.getSessionToken())).build();
-    }
+    }*/
 }

@@ -1,0 +1,18 @@
+
+- name: cloudsql-proxy
+  image: gcr.io/cloudsql-docker/gce-proxy:1.14
+  resources:
+    limits:
+      memory: "200Mi"
+    requests:
+      memory: "100Mi"
+  command: ["/cloud_sql_proxy",
+            "-instances=hadwen:us-central1:admin=tcp:3306",
+            "-credential_file=/secrets/cloudsql/credentials.json"]
+  securityContext:
+    runAsUser: 2  # non-root user
+    allowPrivilegeEscalation: false
+  volumeMounts:
+    - name: cloudsql-instance-credentials
+      mountPath: /secrets/cloudsql
+      readOnly: true
