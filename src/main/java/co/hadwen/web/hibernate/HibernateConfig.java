@@ -13,9 +13,11 @@ import java.util.logging.Logger;
 
 @Configuration
 public class HibernateConfig {
+    private static final long SLEEP_TIME = 2000;
+    private static final int MAX_RETRIES = 12;
     private static Logger logger = Logger.getLogger(HibernateConfig.class.getName());
 
-    private static final String CONN_FORMAT = "jdbc:postgresql:%s:%s/sparkle";
+    private static final String CONN_FORMAT = "jdbc:postgresql://%s:%s/sparkle";
 
     @Bean
     org.hibernate.cfg.Configuration annotationConfig() {
@@ -27,7 +29,28 @@ public class HibernateConfig {
     }
 
     @Bean
-    HibernateSessionFactory hibernateSessionFactory(@NonNull org.hibernate.cfg.Configuration hibernateConfig) {
+    HibernateSessionFactory hibernateSessionFactory() {
+        for (int i = 0; i < MAX_RETRIES; i++) {
+            try {
+                org.hibernate.cfg.Configuration hibernateConfig = new org.hibernate.cfg.Configuration()
+                        .addAnnotatedClass(UserAccount.class)
+                        //.addAnnotatedClass(WebSessionToken.class)
+                        .setProperties(createProperties());
+                return new HibernateSessionFactory(hibernateConfig);
+            } catch (ExceptionInInitializerError | Exception e) {
+                try {
+                    Thread.sleep(SLEEP_TIME);
+                    System.out.printf("Sleeping: %d\n", i);
+                } catch (Exception e2) {
+                    System.out.println("Sleep exception: " + e.getMessage());
+                }
+                System.out.println(e.getMessage());
+            }
+        }
+        org.hibernate.cfg.Configuration hibernateConfig = new org.hibernate.cfg.Configuration()
+                .addAnnotatedClass(UserAccount.class)
+                //.addAnnotatedClass(WebSessionToken.class)
+                .setProperties(createProperties());
         return new HibernateSessionFactory(hibernateConfig);
     }
 
@@ -49,7 +72,7 @@ public class HibernateConfig {
         properties.setProperty("show_sql", "true");
         properties.setProperty("hbm2ddl.auto", "update");
         properties.keySet().forEach(key -> {
-            System.out.printf("Created with Property: %s=%s", key.toString(), properties.getProperty(key.toString()));
+            System.out.printf("*Created with Property: %s=%s\n", key.toString(), properties.getProperty(key.toString()));
         });
         return properties;
     }

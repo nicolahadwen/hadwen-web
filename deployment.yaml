@@ -17,8 +17,9 @@ spec:
         tier: web
     spec:
       containers:
-        - image: hadwen/web:latest
+        - image: hadwen/web:0.0.00
           name: hadwenweb
+          imagePullPolicy: "Always"
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -58,7 +59,7 @@ spec:
             requests:
               memory: "100Mi"
           command: ["/cloud_sql_proxy",
-                    "-instances=hadwen:us-central1:admin=tcp:3306",
+                    "-instances=hadwen:us-central1:admin=tcp:5432",
                     "-credential_file=/secrets/cloudsql/credentials.json"]
           securityContext:
             runAsUser: 2  # non-root user

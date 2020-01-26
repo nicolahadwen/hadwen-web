@@ -23,12 +23,6 @@ import java.net.URI;
 @RequestMapping("v1")
 @RestController
 public class UserController {
-    @GetMapping("/user/test")
-    ResponseEntity<String> search() throws Exception {
-        return ResponseEntity.ok("Hello!!!!!");
-    }
-
-    /*
     private static final String CREATED_URI_FORMAT = "user/%s";
     private UserClient userClient;
 
@@ -75,5 +69,5 @@ public class UserController {
         }
         userClient.update(user);
         return ResponseEntity.noContent().build();
-    }*/
+    }
 }
